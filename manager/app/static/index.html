@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Proxy Manager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1>Reverse Proxy Manager</h1>
+        <nav>
+            <button class="nav-btn active" data-tab="routes">Routes</button>
+            <button class="nav-btn" data-tab="certificates">Certificates</button>
+            <button class="nav-btn" data-tab="health">Health</button>
+            <button class="nav-btn" data-tab="logs">Logs</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Routes Tab -->
+        <section id="tab-routes" class="tab-content active">
+            <div class="tab-header">
+                <h2>Proxy Routes</h2>
+                <button class="btn btn-primary" id="btn-add-route">+ Add Route</button>
+            </div>
+            <div id="routes-list" class="card-list"></div>
+        </section>
+
+        <!-- Certificates Tab -->
+        <section id="tab-certificates" class="tab-content">
+            <div class="tab-header">
+                <h2>Certificate Authority</h2>
+            </div>
+            <div id="ca-status" class="ca-section"></div>
+
+            <div class="tab-header">
+                <h2>Certificates</h2>
+                <button class="btn btn-primary" id="btn-issue-cert">+ Issue Certificate</button>
+            </div>
+            <div id="certs-list" class="card-list"></div>
+        </section>
+
+        <!-- Health Tab -->
+        <section id="tab-health" class="tab-content">
+            <div class="tab-header">
+                <h2>Backend Health Status</h2>
+                <button class="btn btn-secondary" id="btn-refresh-health">Refresh</button>
+            </div>
+            <div id="health-list" class="card-list"></div>
+        </section>
+        <!-- Logs Tab -->
+        <section id="tab-logs" class="tab-content">
+            <div class="tab-header">
+                <h2>Access Logs</h2>
+                <div class="log-controls">
+                    <div class="log-subtabs">
+                        <button class="btn btn-sm btn-primary log-subtab active" data-logsrc="proxy">Proxy</button>
+                        <button class="btn btn-sm btn-secondary log-subtab" data-logsrc="manager">Manager</button>
+                    </div>
+                    <label class="log-auto-label">
+                        <input type="checkbox" id="log-auto-refresh" checked> Auto
+                    </label>
+                    <button class="btn btn-secondary btn-sm" id="btn-refresh-logs">Refresh</button>
+                </div>
+            </div>
+            <div class="log-filters">
+                <div class="filter-group">
+                    <label>From</label>
+                    <input type="datetime-local" id="filter-time-from">
+                </div>
+                <div class="filter-group">
+                    <label>To</label>
+                    <input type="datetime-local" id="filter-time-to">
+                </div>
+                <div class="filter-group">
+                    <label>IP</label>
+                    <input type="text" id="filter-ip" placeholder="e.g. 192.168">
+                </div>
+                <div class="filter-group">
+                    <label>Method</label>
+                    <select id="filter-method">
+                        <option value="">All</option>
+                        <option>GET</option>
+                        <option>POST</option>
+                        <option>PUT</option>
+                        <option>DELETE</option>
+                        <option>PATCH</option>
+                        <option>HEAD</option>
+                        <option>OPTIONS</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Host / Path</label>
+                    <input type="text" id="filter-path" placeholder="e.g. /api or example.com">
+                </div>
+                <button class="btn btn-primary btn-sm" id="btn-apply-filters">Filter</button>
+                <button class="btn btn-secondary btn-sm" id="btn-clear-filters">Reset</button>
+            </div>
+            <div id="logs-container" class="log-table-wrap">
+                <table class="log-table">
+                    <thead id="logs-thead">
+                        <tr>
+                            <th>Time</th>
+                            <th>Client IP</th>
+                            <th>Method</th>
+                            <th>Host / Path</th>
+                            <th>Status</th>
+                            <th>Duration</th>
+                            <th>Backend</th>
+                            <th>User-Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Route Modal -->
+    <div class="modal-overlay" id="route-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="route-modal-title">Add Route</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="route-form">
+                <input type="hidden" id="route-id">
+                <div class="form-group">
+                    <label for="route-name">Name</label>
+                    <input type="text" id="route-name" required placeholder="My Service">
+                </div>
+                <div class="form-group">
+                    <label for="route-type">Type</label>
+                    <select id="route-type">
+                        <option value="host">Host-based</option>
+                        <option value="path">Path-based</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="route-match">Match Pattern</label>
+                    <input type="text" id="route-match" required placeholder="app.example.com or /api/">
+                </div>
+                <div class="form-group">
+                    <label for="route-target-host">Target Host</label>
+                    <input type="text" id="route-target-host" required placeholder="192.168.1.100">
+                </div>
+                <div class="form-group">
+                    <label for="route-target-port">Target Port</label>
+                    <input type="number" id="route-target-port" required placeholder="8080" min="1" max="65535">
+                </div>
+                <div class="form-group form-row">
+                    <label>
+                        <input type="checkbox" id="route-ssl"> Enable SSL
+                    </label>
+                </div>
+                <div class="form-group" id="cert-select-group" style="display:none">
+                    <label for="route-cert">Certificate</label>
+                    <select id="route-cert">
+                        <option value="">-- Select Certificate --</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div class="modal-overlay" id="cert-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Issue Certificate</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="cert-form">
+                <div class="form-group">
+                    <label for="cert-cn">Common Name</label>
+                    <input type="text" id="cert-cn" required placeholder="app.example.com">
+                </div>
+                <div class="form-group">
+                    <label for="cert-domains">Additional Domain Names (comma-separated)</label>
+                    <input type="text" id="cert-domains" placeholder="www.example.com, api.example.com">
+                </div>
+                <div class="form-group">
+                    <label for="cert-validity">Validity (days)</label>
+                    <input type="number" id="cert-validity" placeholder="365" min="1">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Issue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

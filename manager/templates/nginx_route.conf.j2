@@ -1,0 +1,59 @@
+{% if route.route_type == "host" %}
+# Route: {{ route.name }} (host-based)
+server {
+    listen 80;
+    server_name {{ route.match_pattern }};
+
+{% if route.ssl_enabled and cert %}
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name {{ route.match_pattern }};
+
+    ssl_certificate {{ certs_dir }}/{{ cert.common_name | replace("*", "_wildcard_") | replace("/", "_") }}.crt;
+    ssl_certificate_key {{ certs_dir }}/{{ cert.common_name | replace("*", "_wildcard_") | replace("/", "_") }}.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+{% endif %}
+    location / {
+        proxy_pass http://{{ route.target_host }}:{{ route.target_port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+{% elif route.route_type == "path" %}
+# Route: {{ route.name }} (path-based)
+# Path-based routes are added to a shared server block
+server {
+    listen 80;
+    server_name _;
+
+{% if route.ssl_enabled and cert %}
+    listen 443 ssl;
+    ssl_certificate {{ certs_dir }}/{{ cert.common_name | replace("*", "_wildcard_") | replace("/", "_") }}.crt;
+    ssl_certificate_key {{ certs_dir }}/{{ cert.common_name | replace("*", "_wildcard_") | replace("/", "_") }}.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+{% endif %}
+
+    location {{ route.match_pattern }} {
+        proxy_pass http://{{ route.target_host }}:{{ route.target_port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+{% endif %}

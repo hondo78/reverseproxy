@@ -1,0 +1,49 @@
+services:
+  nginx:
+    build: ./nginx
+    container_name: reverseproxy-nginx
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+    volumes:
+      - nginx-config:/etc/nginx/conf.d
+      - certs-data:/etc/nginx/certs
+      - log-data:/data/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  manager:
+    build: ./manager
+    container_name: reverseproxy-manager
+    ports:
+      - "${MANAGER_PORT:-8080}:8080"
+    volumes:
+      - nginx-config:/etc/nginx/conf.d
+      - certs-data:/data/certs
+      - ca-data:/data/ca
+      - db-data:/data/db
+      - log-data:/data/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DB_PATH=${DB_PATH:-/data/db/proxy.db}
+      - CA_COMMON_NAME=${CA_COMMON_NAME:-Reverse Proxy CA}
+      - CA_VALIDITY_YEARS=${CA_VALIDITY_YEARS:-10}
+      - CERT_VALIDITY_DAYS=${CERT_VALIDITY_DAYS:-365}
+      - HEALTH_CHECK_INTERVAL=${HEALTH_CHECK_INTERVAL:-30}
+      - NGINX_CONTAINER_NAME=reverseproxy-nginx
+    depends_on:
+      nginx:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  nginx-config:
+  certs-data:
+  ca-data:
+  db-data:
+  log-data:
