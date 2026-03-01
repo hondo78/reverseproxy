@@ -1,352 +1,572 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" modified="2026-03-01T10:00:00.000Z" type="device">
-  <diagram id="reverseproxy-architecture" name="Architecture">
-    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+<mxfile host="app.diagrams.net" modified="2026-03-01T12:00:00.000Z" type="device">
+  <diagram id="overview" name="Architecture Overview">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
-        <!-- Title -->
-        <mxCell id="title" value="Reverse Proxy Manager - Architecture" style="text;html=1;fontSize=22;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#EEEEEE;" vertex="1" parent="1">
-          <mxGeometry x="500" y="20" width="500" height="40" as="geometry" />
+        <!-- ==================== TITLE ==================== -->
+        <mxCell id="title" value="Reverse Proxy Manager" style="text;html=1;fontSize=24;fontStyle=1;align=center;fillColor=none;strokeColor=none;fontColor=#e1e4eb;" vertex="1" parent="1">
+          <mxGeometry x="550" y="15" width="400" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Docker Compose Architecture" style="text;html=1;fontSize=13;align=center;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
+          <mxGeometry x="575" y="48" width="350" height="20" as="geometry" />
         </mxCell>
 
-        <!-- Docker Compose Boundary -->
-        <mxCell id="docker-compose" value="Docker Compose" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#6366f1;strokeWidth=2;dashed=1;verticalAlign=top;fontStyle=1;fontSize=14;fontColor=#6366f1;arcSize=6;" vertex="1" parent="1">
-          <mxGeometry x="80" y="80" width="1340" height="560" as="geometry" />
+        <!-- ==================== CLIENTS ==================== -->
+        <mxCell id="user" value="User / Browser" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="200" y="80" width="80" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="admin" value="Admin" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="900" y="80" width="80" height="70" as="geometry" />
         </mxCell>
 
-        <!-- External Clients -->
-        <mxCell id="client-browser" value="Browser&#xa;Client" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="160" y="710" width="80" height="80" as="geometry" />
+        <!-- ==================== DOCKER COMPOSE BOX ==================== -->
+        <mxCell id="compose" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0f1117;strokeColor=#2e3140;strokeWidth=2;dashed=1;arcSize=4;" vertex="1" parent="1">
+          <mxGeometry x="50" y="190" width="1400" height="620" as="geometry" />
         </mxCell>
-        <mxCell id="client-admin" value="Admin&#xa;Browser" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="700" y="710" width="80" height="80" as="geometry" />
-        </mxCell>
-
-        <!-- ======================== -->
-        <!-- NGINX Container -->
-        <!-- ======================== -->
-        <mxCell id="nginx-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#16213e;strokeColor=#0ea5e9;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="110" y="130" width="400" height="380" as="geometry" />
-        </mxCell>
-        <mxCell id="nginx-title" value="Nginx Container" style="text;html=1;fontSize=14;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#0ea5e9;" vertex="1" parent="1">
-          <mxGeometry x="130" y="135" width="200" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="nginx-subtitle" value="reverseproxy-nginx" style="text;html=1;fontSize=10;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
-          <mxGeometry x="130" y="155" width="200" height="20" as="geometry" />
+        <mxCell id="compose-label" value="Docker Compose" style="text;html=1;fontSize=12;fontStyle=1;align=left;fillColor=none;strokeColor=none;fontColor=#2e3140;" vertex="1" parent="1">
+          <mxGeometry x="65" y="195" width="150" height="20" as="geometry" />
         </mxCell>
 
-        <!-- Nginx Process -->
-        <mxCell id="nginx-process" value="&lt;b&gt;Nginx 1.27&lt;/b&gt;&#xa;Reverse Proxy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#0ea5e9;fontColor=#e1e4eb;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="180" y="190" width="160" height="60" as="geometry" />
+        <!-- ==================== NGINX CONTAINER ==================== -->
+        <mxCell id="nginx-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#16213e;strokeColor=#0ea5e9;strokeWidth=2;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="80" y="230" width="420" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="nginx-label" value="reverseproxy-nginx" style="text;html=1;fontSize=15;fontStyle=1;align=left;fillColor=none;strokeColor=none;fontColor=#0ea5e9;" vertex="1" parent="1">
+          <mxGeometry x="100" y="240" width="250" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="nginx-sub" value="Nginx 1.27 Alpine" style="text;html=1;fontSize=10;align=left;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="262" width="150" height="18" as="geometry" />
         </mxCell>
 
-        <!-- Nginx Ports -->
-        <mxCell id="nginx-port-http" value=":83 HTTP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0ea5e9;strokeColor=none;fontColor=#ffffff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="140" y="280" width="90" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="nginx-port-https" value=":4433 HTTPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0ea5e9;strokeColor=none;fontColor=#ffffff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="250" y="280" width="100" height="30" as="geometry" />
+        <!-- Nginx Core -->
+        <mxCell id="nginx-core" value="&lt;b&gt;Nginx&lt;/b&gt;&#xa;Reverse Proxy Engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#0ea5e9;fontColor=#e1e4eb;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="295" width="200" height="55" as="geometry" />
         </mxCell>
 
-        <!-- Nginx Config Files -->
-        <mxCell id="nginx-conf" value="nginx.conf" style="shape=document;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="140" y="340" width="100" height="50" as="geometry" />
+        <!-- Ports -->
+        <mxCell id="port-http" value=":80 HTTP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0ea5e9;strokeColor=none;fontColor=#fff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="295" width="90" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="nginx-routeconf" value="conf.d/&#xa;route_*.conf" style="shape=document;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="260" y="340" width="100" height="50" as="geometry" />
+        <mxCell id="port-https" value=":443 HTTPS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0ea5e9;strokeColor=none;fontColor=#fff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="326" width="90" height="24" as="geometry" />
         </mxCell>
 
-        <!-- Nginx Certs -->
+        <!-- Nginx Config -->
+        <mxCell id="nginx-conf" value="nginx.conf&#xa;(base config)" style="shape=document;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="110" y="375" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="nginx-routes" value="conf.d/&#xa;route_*.conf" style="shape=document;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="375" width="110" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- SSL Certs in Nginx -->
         <mxCell id="nginx-certs" value="/etc/nginx/certs&#xa;SSL Certificates" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=10;size=8;" vertex="1" parent="1">
-          <mxGeometry x="160" y="420" width="130" height="60" as="geometry" />
+          <mxGeometry x="110" y="450" width="130" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- JSON Access Log -->
+        <mxCell id="nginx-log" value="/data/logs/&#xa;proxy-access.log&#xa;(JSON)" style="shape=note;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=9;size=12;" vertex="1" parent="1">
+          <mxGeometry x="260" y="450" width="120" height="55" as="geometry" />
         </mxCell>
 
         <!-- Entrypoint -->
-        <mxCell id="nginx-entrypoint" value="entrypoint.sh&#xa;(Default Cert Gen)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#8b90a0;fontSize=9;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="370" y="190" width="120" height="40" as="geometry" />
+        <mxCell id="entrypoint" value="entrypoint.sh&#xa;Default Cert Gen" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#8b90a0;fontSize=9;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="530" width="120" height="35" as="geometry" />
         </mxCell>
 
-        <!-- ======================== -->
-        <!-- Manager Container -->
-        <!-- ======================== -->
-        <mxCell id="manager-container" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#6366f1;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="560" y="130" width="500" height="380" as="geometry" />
+        <!-- Healthcheck -->
+        <mxCell id="nginx-hc" value="Healthcheck: nginx -t&#xa;every 10s" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#8b90a0;fontSize=9;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="530" width="140" height="35" as="geometry" />
         </mxCell>
-        <mxCell id="manager-title" value="Manager Container" style="text;html=1;fontSize=14;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#6366f1;" vertex="1" parent="1">
-          <mxGeometry x="580" y="135" width="200" height="30" as="geometry" />
+
+        <!-- ==================== MANAGER CONTAINER ==================== -->
+        <mxCell id="mgr-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#6366f1;strokeWidth=2;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="550" y="230" width="530" height="560" as="geometry" />
         </mxCell>
-        <mxCell id="manager-subtitle" value="reverseproxy-manager  :8888" style="text;html=1;fontSize=10;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
-          <mxGeometry x="580" y="155" width="200" height="20" as="geometry" />
+        <mxCell id="mgr-label" value="reverseproxy-manager" style="text;html=1;fontSize=15;fontStyle=1;align=left;fillColor=none;strokeColor=none;fontColor=#6366f1;" vertex="1" parent="1">
+          <mxGeometry x="570" y="240" width="250" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr-sub" value="Python 3.12 + FastAPI + Docker CLI" style="text;html=1;fontSize=10;align=left;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
+          <mxGeometry x="570" y="262" width="250" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="mgr-port" value=":8080" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6366f1;strokeColor=none;fontColor=#fff;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="990" y="240" width="60" height="24" as="geometry" />
         </mxCell>
 
         <!-- FastAPI -->
-        <mxCell id="fastapi" value="&lt;b&gt;FastAPI&lt;/b&gt;&#xa;Uvicorn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="680" y="190" width="130" height="50" as="geometry" />
-        </mxCell>
-
-        <!-- API Routers -->
-        <mxCell id="router-routes" value="/api/routes&#xa;CRUD + Toggle" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b3670;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="580" y="260" width="110" height="45" as="geometry" />
-        </mxCell>
-        <mxCell id="router-certs" value="/api/certificates&#xa;+ /api/ca" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b3670;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="700" y="260" width="110" height="45" as="geometry" />
-        </mxCell>
-        <mxCell id="router-health" value="/api/health&#xa;Status" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b3670;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="820" y="260" width="100" height="45" as="geometry" />
-        </mxCell>
-
-        <!-- Services -->
-        <mxCell id="svc-nginx" value="Nginx Service&#xa;Config Gen + Reload" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#0ea5e9;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="580" y="330" width="130" height="45" as="geometry" />
-        </mxCell>
-        <mxCell id="svc-ca" value="CA Service&#xa;Cert Issuance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a3a1a;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="720" y="330" width="110" height="45" as="geometry" />
-        </mxCell>
-        <mxCell id="svc-health" value="Health Check&#xa;Periodic (30s)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3a2a1a;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="840" y="330" width="110" height="45" as="geometry" />
+        <mxCell id="fastapi" value="&lt;b&gt;FastAPI&lt;/b&gt; + Uvicorn" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="700" y="290" width="160" height="45" as="geometry" />
         </mxCell>
 
         <!-- Web UI -->
-        <mxCell id="webui" value="Web UI&#xa;(HTML / CSS / JS)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b3670;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=11;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="840" y="190" width="130" height="50" as="geometry" />
+        <mxCell id="webui" value="Web UI&#xa;HTML / CSS / JS&#xa;(Dark Theme)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b3670;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=11;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="900" y="290" width="130" height="55" as="geometry" />
         </mxCell>
 
-        <!-- SQLite DB -->
-        <mxCell id="sqlite" value="SQLite&#xa;proxy.db" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=11;size=8;" vertex="1" parent="1">
-          <mxGeometry x="700" y="410" width="100" height="70" as="geometry" />
+        <!-- Middleware -->
+        <mxCell id="middleware" value="Access Log&#xa;Middleware" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b2d5e;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="580" y="300" width="95" height="35" as="geometry" />
         </mxCell>
 
-        <!-- DB Tables -->
-        <mxCell id="db-tables" value="Routes | Certificates | CA" style="text;html=1;fontSize=9;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
-          <mxGeometry x="680" y="480" width="140" height="20" as="geometry" />
+        <!-- API Routers -->
+        <mxCell id="r-routes" value="/api/routes&#xa;CRUD + Toggle" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b3670;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="580" y="365" width="110" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="r-certs" value="/api/certificates&#xa;/api/ca" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b3670;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="700" y="365" width="110" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="r-health" value="/api/health&#xa;Status" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b3670;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="820" y="365" width="95" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="r-logs" value="/api/logs&#xa;proxy | manager&#xa;+ Filter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b2d5e;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="925" y="365" width="110" height="42" as="geometry" />
+        </mxCell>
+
+        <!-- Services -->
+        <mxCell id="s-nginx" value="Nginx Service&#xa;Config Gen&#xa;Validate + Reload" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#0ea5e9;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="580" y="440" width="120" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="s-ca" value="CA Service&#xa;Root CA&#xa;Cert Issuance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a3a1a;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="715" y="440" width="110" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="s-health" value="Health Check&#xa;TCP / HTTP&#xa;every 30s" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3a2a1a;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="840" y="440" width="110" height="55" as="geometry" />
         </mxCell>
 
         <!-- Jinja2 Template -->
-        <mxCell id="jinja2" value="Jinja2&#xa;nginx_route.conf.j2" style="shape=document;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=9;" vertex="1" parent="1">
-          <mxGeometry x="580" y="400" width="110" height="50" as="geometry" />
+        <mxCell id="jinja" value="Jinja2 Template&#xa;nginx_route.conf.j2" style="shape=document;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="580" y="520" width="120" height="48" as="geometry" />
         </mxCell>
 
-        <!-- ======================== -->
-        <!-- Docker Volumes -->
-        <!-- ======================== -->
-        <mxCell id="vol-title" value="Docker Volumes" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#f59e0b;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="135" width="150" height="25" as="geometry" />
+        <!-- SQLite -->
+        <mxCell id="sqlite" value="&lt;b&gt;SQLite&lt;/b&gt;&#xa;proxy.db" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=11;size=8;" vertex="1" parent="1">
+          <mxGeometry x="725" y="525" width="100" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="db-tables" value="Tables: Routes | Certificates | CA" style="text;html=1;fontSize=9;align=center;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
+          <mxGeometry x="690" y="590" width="175" height="18" as="geometry" />
         </mxCell>
 
-        <mxCell id="vol-config" value="nginx-config&#xa;/etc/nginx/conf.d" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=10;size=8;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="170" width="140" height="60" as="geometry" />
+        <!-- Manager Log File -->
+        <mxCell id="mgr-logfile" value="/data/logs/&#xa;manager-access.log" style="shape=note;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=9;size=12;" vertex="1" parent="1">
+          <mxGeometry x="880" y="530" width="130" height="48" as="geometry" />
         </mxCell>
-        <mxCell id="vol-certs" value="certs-data&#xa;Nginx: /etc/nginx/certs&#xa;Manager: /data/certs" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=10;size=8;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="250" width="160" height="75" as="geometry" />
+
+        <!-- Log Filter Info -->
+        <mxCell id="log-filter" value="Filter: Time | IP | Method | Path" style="text;html=1;fontSize=9;align=center;fillColor=none;strokeColor=none;fontColor=#a78bfa;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="900" y="415" width="160" height="18" as="geometry" />
         </mxCell>
-        <mxCell id="vol-ca" value="ca-data&#xa;/data/ca" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=10;size=8;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="345" width="140" height="60" as="geometry" />
+
+        <!-- UI Tabs -->
+        <mxCell id="ui-tabs" value="Tabs: Routes | Certificates | Health | Logs" style="text;html=1;fontSize=9;align=center;fillColor=none;strokeColor=none;fontColor=#a78bfa;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="888" y="348" width="165" height="18" as="geometry" />
         </mxCell>
-        <mxCell id="vol-db" value="db-data&#xa;/data/db" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=10;size=8;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="425" width="140" height="60" as="geometry" />
+
+        <!-- ==================== DOCKER VOLUMES ==================== -->
+        <mxCell id="vol-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#f59e0b;strokeWidth=1;dashed=1;arcSize=6;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="230" width="300" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="vol-title" value="Docker Volumes (persistent)" style="text;html=1;fontSize=12;fontStyle=1;align=left;fillColor=none;strokeColor=none;fontColor=#f59e0b;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="237" width="220" height="22" as="geometry" />
+        </mxCell>
+
+        <mxCell id="v-config" value="nginx-config&#xa;/etc/nginx/conf.d" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=10;size=7;" vertex="1" parent="1">
+          <mxGeometry x="1145" y="275" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="v-certs" value="certs-data&#xa;SSL Certificates" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=10;size=7;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="275" width="115" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="v-ca" value="ca-data&#xa;CA Keys" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=10;size=7;" vertex="1" parent="1">
+          <mxGeometry x="1145" y="345" width="115" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="v-db" value="db-data&#xa;SQLite" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=10;size=7;" vertex="1" parent="1">
+          <mxGeometry x="1280" y="345" width="115" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="v-logs" value="log-data&#xa;Access Logs" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=10;size=7;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="420" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Volume Mapping Labels -->
+        <mxCell id="v-certs-map" value="Nginx: /etc/nginx/certs&#xa;Manager: /data/certs" style="text;html=1;fontSize=8;align=center;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
+          <mxGeometry x="1270" y="325" width="155" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="v-logs-map" value="shared: /data/logs&#xa;proxy-access.log + manager-access.log" style="text;html=1;fontSize=8;align=center;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
+          <mxGeometry x="1165" y="470" width="195" height="22" as="geometry" />
         </mxCell>
 
         <!-- Docker Socket -->
-        <mxCell id="docker-socket" value="/var/run/docker.sock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3a1a1a;strokeColor=#ef4444;fontColor=#e1e4eb;fontSize=10;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="505" width="160" height="35" as="geometry" />
+        <mxCell id="docker-sock" value="/var/run/docker.sock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3a1a1a;strokeColor=#ef4444;fontColor=#e1e4eb;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1155" y="520" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="docker-sock-label" value="docker exec nginx -s reload" style="text;html=1;fontSize=9;align=center;fillColor=none;strokeColor=none;fontColor=#ef4444;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="550" width="170" height="18" as="geometry" />
         </mxCell>
 
-        <!-- ======================== -->
-        <!-- Backend Targets -->
-        <!-- ======================== -->
-        <mxCell id="backends-title" value="Backend Services" style="text;html=1;fontSize=12;fontStyle=1;align=center;verticalAlign=middle;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
-          <mxGeometry x="150" y="650" width="150" height="25" as="geometry" />
+        <!-- ==================== BACKEND TARGETS ==================== -->
+        <mxCell id="backends-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#8b90a0;strokeWidth=1;dashed=1;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="80" y="840" width="420" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="backend1" value="192.168.x.x:8080&#xa;Web App" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=10;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="320" y="690" width="120" height="45" as="geometry" />
-        </mxCell>
-        <mxCell id="backend2" value="192.168.x.x:3000&#xa;API Server" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=10;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="460" y="690" width="120" height="45" as="geometry" />
+        <mxCell id="backends-title" value="Backend Services (your servers)" style="text;html=1;fontSize=11;fontStyle=1;align=left;fillColor=none;strokeColor=none;fontColor=#8b90a0;" vertex="1" parent="1">
+          <mxGeometry x="95" y="848" width="250" height="20" as="geometry" />
         </mxCell>
 
-        <!-- ======================== -->
-        <!-- Connections -->
-        <!-- ======================== -->
+        <mxCell id="be1" value="192.168.x.x:8080&#xa;Web App" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="100" y="878" width="115" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="be2" value="192.168.x.x:3000&#xa;API Server" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="230" y="878" width="115" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="be3" value="192.168.x.x:9090&#xa;Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#8b90a0;fontColor=#e1e4eb;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="360" y="878" width="115" height="42" as="geometry" />
+        </mxCell>
 
-        <!-- Client -> Nginx -->
-        <mxCell id="conn-client-nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0ea5e9;strokeWidth=2;fontColor=#e1e4eb;fontSize=10;" edge="1" parent="1" source="client-browser" target="nginx-port-http">
+        <!-- ==================== CONNECTIONS ==================== -->
+
+        <!-- User -> Nginx -->
+        <mxCell id="c-user-nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0ea5e9;strokeWidth=2;" edge="1" parent="1" source="user" target="nginx-core">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-client-nginx-label" value="HTTP/HTTPS" style="edgeLabel;html=1;fontSize=9;fontColor=#0ea5e9;" vertex="1" connectable="0" parent="conn-client-nginx">
-          <mxGeometry x="-0.2" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        <mxCell id="c-user-nginx-l" value="HTTP / HTTPS" style="edgeLabel;html=1;fontSize=9;fontColor=#0ea5e9;" connectable="0" vertex="1" parent="c-user-nginx">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="-10" as="offset" /></mxGeometry>
         </mxCell>
 
         <!-- Admin -> Manager -->
-        <mxCell id="conn-admin-manager" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#6366f1;strokeWidth=2;fontColor=#e1e4eb;fontSize=10;" edge="1" parent="1" source="client-admin" target="fastapi">
+        <mxCell id="c-admin-mgr" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#6366f1;strokeWidth=2;" edge="1" parent="1" source="admin" target="webui">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-admin-manager-label" value=":8888 Web UI + API" style="edgeLabel;html=1;fontSize=9;fontColor=#6366f1;" vertex="1" connectable="0" parent="conn-admin-manager">
-          <mxGeometry x="-0.2" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        <mxCell id="c-admin-mgr-l" value="Web UI :8080" style="edgeLabel;html=1;fontSize=9;fontColor=#6366f1;" connectable="0" vertex="1" parent="c-admin-mgr">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
         </mxCell>
 
         <!-- Nginx -> Backends -->
-        <mxCell id="conn-nginx-backend1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#8b90a0;strokeWidth=1;dashed=1;" edge="1" parent="1" source="nginx-process" target="backend1">
+        <mxCell id="c-nginx-be" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#8b90a0;strokeWidth=2;dashed=1;" edge="1" parent="1" source="nginx-core" target="be2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-nginx-backend1-label" value="proxy_pass" style="edgeLabel;html=1;fontSize=9;fontColor=#8b90a0;" vertex="1" connectable="0" parent="conn-nginx-backend1">
+        <mxCell id="c-nginx-be-l" value="proxy_pass" style="edgeLabel;html=1;fontSize=9;fontColor=#8b90a0;" connectable="0" vertex="1" parent="c-nginx-be">
           <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
-        </mxCell>
-        <mxCell id="conn-nginx-backend2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#8b90a0;strokeWidth=1;dashed=1;" edge="1" parent="1" source="nginx-process" target="backend2">
-          <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
         <!-- FastAPI -> Routers -->
-        <mxCell id="conn-api-routes" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;" edge="1" parent="1" source="fastapi" target="router-routes">
+        <mxCell id="c-api-r1" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;" edge="1" parent="1" source="fastapi" target="r-routes">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-api-certs" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;" edge="1" parent="1" source="fastapi" target="router-certs">
+        <mxCell id="c-api-r2" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;" edge="1" parent="1" source="fastapi" target="r-certs">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-api-health" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;" edge="1" parent="1" source="fastapi" target="router-health">
+        <mxCell id="c-api-r3" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;" edge="1" parent="1" source="fastapi" target="r-health">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c-api-r4" style="rounded=1;strokeColor=#a78bfa;strokeWidth=1;" edge="1" parent="1" source="fastapi" target="r-logs">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
         <!-- Routers -> Services -->
-        <mxCell id="conn-route-svcnginx" style="rounded=1;strokeColor=#0ea5e9;strokeWidth=1;" edge="1" parent="1" source="router-routes" target="svc-nginx">
+        <mxCell id="c-r1-s1" style="rounded=1;strokeColor=#0ea5e9;strokeWidth=1;" edge="1" parent="1" source="r-routes" target="s-nginx">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-certs-svcca" style="rounded=1;strokeColor=#22c55e;strokeWidth=1;" edge="1" parent="1" source="router-certs" target="svc-ca">
+        <mxCell id="c-r2-s2" style="rounded=1;strokeColor=#22c55e;strokeWidth=1;" edge="1" parent="1" source="r-certs" target="s-ca">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-health-svchealth" style="rounded=1;strokeColor=#f59e0b;strokeWidth=1;" edge="1" parent="1" source="router-health" target="svc-health">
+        <mxCell id="c-r3-s3" style="rounded=1;strokeColor=#f59e0b;strokeWidth=1;" edge="1" parent="1" source="r-health" target="s-health">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
         <!-- Services -> DB -->
-        <mxCell id="conn-svc-db1" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="svc-nginx" target="sqlite">
+        <mxCell id="c-s1-db" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="s-nginx" target="sqlite">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-svc-db2" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="svc-ca" target="sqlite">
+        <mxCell id="c-s2-db" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="s-ca" target="sqlite">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-svc-db3" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="svc-health" target="sqlite">
+        <mxCell id="c-s3-db" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="s-health" target="sqlite">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
         <!-- Nginx Service -> Jinja2 -->
-        <mxCell id="conn-svcnginx-jinja" style="rounded=1;strokeColor=#f59e0b;strokeWidth=1;" edge="1" parent="1" source="svc-nginx" target="jinja2">
+        <mxCell id="c-s1-j" style="rounded=1;strokeColor=#f59e0b;strokeWidth=1;" edge="1" parent="1" source="s-nginx" target="jinja">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- Nginx Service -> Volume Config (generates) -->
-        <mxCell id="conn-svcnginx-volconf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=2;dashed=1;" edge="1" parent="1" source="svc-nginx" target="vol-config">
+        <!-- Nginx Service ==writes==> Volume config ==mounted==> Nginx routes -->
+        <mxCell id="c-s1-vconf" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=2;dashed=1;" edge="1" parent="1" source="s-nginx" target="v-config">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="545" y="353" />
-              <mxPoint x="545" y="553" />
-              <mxPoint x="1080" y="553" />
-              <mxPoint x="1080" y="200" />
+              <mxPoint x="560" y="468" />
+              <mxPoint x="560" y="680" />
+              <mxPoint x="1110" y="680" />
+              <mxPoint x="1110" y="300" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn-svcnginx-volconf-label" value="writes configs" style="edgeLabel;html=1;fontSize=9;fontColor=#f59e0b;" vertex="1" connectable="0" parent="conn-svcnginx-volconf">
-          <mxGeometry x="0.4" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        <mxCell id="c-s1-vconf-l" value="writes route configs" style="edgeLabel;html=1;fontSize=8;fontColor=#f59e0b;" connectable="0" vertex="1" parent="c-s1-vconf">
+          <mxGeometry x="0.55" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
         </mxCell>
 
-        <!-- Volume Config -> Nginx route conf -->
-        <mxCell id="conn-volconf-nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=1;dashed=1;" edge="1" parent="1" source="vol-config" target="nginx-routeconf">
+        <!-- Volume config -> Nginx conf.d -->
+        <mxCell id="c-vconf-nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=1;dashed=1;" edge="1" parent="1" source="v-config" target="nginx-routes">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-volconf-nginx-label" value="mounted" style="edgeLabel;html=1;fontSize=8;fontColor=#f59e0b;" vertex="1" connectable="0" parent="conn-volconf-nginx">
+        <mxCell id="c-vconf-nginx-l" value="mounted" style="edgeLabel;html=1;fontSize=8;fontColor=#f59e0b;" connectable="0" vertex="1" parent="c-vconf-nginx">
           <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
         </mxCell>
 
-        <!-- CA Service -> Volume Certs -->
-        <mxCell id="conn-svcca-volcerts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#22c55e;strokeWidth=1;dashed=1;" edge="1" parent="1" source="svc-ca" target="vol-certs">
+        <!-- CA Service -> Volume certs -->
+        <mxCell id="c-s2-vcerts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#22c55e;strokeWidth=1;dashed=1;" edge="1" parent="1" source="s-ca" target="v-certs">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="conn-svcca-volcerts-label" value="writes certs" style="edgeLabel;html=1;fontSize=8;fontColor=#22c55e;" vertex="1" connectable="0" parent="conn-svcca-volcerts">
+        <mxCell id="c-s2-vcerts-l" value="writes certs" style="edgeLabel;html=1;fontSize=8;fontColor=#22c55e;" connectable="0" vertex="1" parent="c-s2-vcerts">
           <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
         </mxCell>
 
-        <!-- Volume Certs -> Nginx Certs -->
-        <mxCell id="conn-volcerts-nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#22c55e;strokeWidth=1;dashed=1;" edge="1" parent="1" source="vol-certs" target="nginx-certs">
+        <!-- Volume certs -> Nginx certs -->
+        <mxCell id="c-vcerts-nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#22c55e;strokeWidth=1;dashed=1;" edge="1" parent="1" source="v-certs" target="nginx-certs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Nginx log -> Volume logs -->
+        <mxCell id="c-nlog-vlog" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#a78bfa;strokeWidth=1;dashed=1;" edge="1" parent="1" source="nginx-log" target="v-logs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Manager log -> Volume logs -->
+        <mxCell id="c-mlog-vlog" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#a78bfa;strokeWidth=1;dashed=1;" edge="1" parent="1" source="mgr-logfile" target="v-logs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Logs router reads proxy log -->
+        <mxCell id="c-rlogs-nlog" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#a78bfa;strokeWidth=1;" edge="1" parent="1" source="r-logs" target="mgr-logfile">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
         <!-- Volume DB -> SQLite -->
-        <mxCell id="conn-voldb-sqlite" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="vol-db" target="sqlite">
+        <mxCell id="c-vdb-sqlite" style="rounded=1;strokeColor=#6366f1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="v-db" target="sqlite">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <!-- Docker Socket -> Nginx Reload -->
-        <mxCell id="conn-socket-nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#ef4444;strokeWidth=1;dashed=1;" edge="1" parent="1" source="docker-socket" target="nginx-process">
+        <!-- Docker Socket -> Nginx reload -->
+        <mxCell id="c-sock-nginx" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#ef4444;strokeWidth=1;dashed=1;" edge="1" parent="1" source="docker-sock" target="nginx-core">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1290" y="570" />
-              <mxPoint x="1290" y="580" />
-              <mxPoint x="90" y="580" />
-              <mxPoint x="90" y="220" />
+              <mxPoint x="1235" y="585" />
+              <mxPoint x="50" y="585" />
+              <mxPoint x="50" y="323" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn-socket-nginx-label" value="docker exec nginx -s reload" style="edgeLabel;html=1;fontSize=9;fontColor=#ef4444;" vertex="1" connectable="0" parent="conn-socket-nginx">
+        <mxCell id="c-sock-nginx-l" value="nginx -s reload" style="edgeLabel;html=1;fontSize=9;fontColor=#ef4444;" connectable="0" vertex="1" parent="c-sock-nginx">
           <mxGeometry x="0.3" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
         </mxCell>
 
         <!-- Health Check -> Backends -->
-        <mxCell id="conn-health-backends" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=1;dashed=1;" edge="1" parent="1" source="svc-health" target="backend1">
+        <mxCell id="c-health-be" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=1;dashed=1;" edge="1" parent="1" source="s-health" target="backends-box">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="960" y="353" />
-              <mxPoint x="960" y="680" />
-              <mxPoint x="380" y="680" />
+              <mxPoint x="1070" y="468" />
+              <mxPoint x="1070" y="830" />
+              <mxPoint x="290" y="830" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn-health-backends-label" value="TCP/HTTP check" style="edgeLabel;html=1;fontSize=9;fontColor=#f59e0b;" vertex="1" connectable="0" parent="conn-health-backends">
+        <mxCell id="c-health-be-l" value="TCP/HTTP check" style="edgeLabel;html=1;fontSize=9;fontColor=#f59e0b;" connectable="0" vertex="1" parent="c-health-be">
           <mxGeometry x="0.5" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
         </mxCell>
 
-        <!-- Legend -->
+        <!-- Middleware -> Manager Log File -->
+        <mxCell id="c-mw-mlog" style="rounded=1;strokeColor=#a78bfa;strokeWidth=1;dashed=1;" edge="1" parent="1" source="middleware" target="mgr-logfile">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="565" y="318" />
+              <mxPoint x="565" y="620" />
+              <mxPoint x="945" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c-mw-mlog-l" value="writes" style="edgeLabel;html=1;fontSize=8;fontColor=#a78bfa;" connectable="0" vertex="1" parent="c-mw-mlog">
+          <mxGeometry x="0.7" relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- ==================== LEGEND ==================== -->
         <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#2e3140;arcSize=8;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="610" width="280" height="170" as="geometry" />
+          <mxGeometry x="1120" y="620" width="300" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="legend-title" value="Legend" style="text;html=1;fontSize=11;fontStyle=1;align=left;fillColor=none;strokeColor=none;fontColor=#e1e4eb;" vertex="1" parent="1">
-          <mxGeometry x="1115" y="615" width="60" height="20" as="geometry" />
+        <mxCell id="legend-title" value="Legend" style="text;html=1;fontSize=12;fontStyle=1;align=left;fillColor=none;strokeColor=none;fontColor=#e1e4eb;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="625" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="legend1" value="" style="rounded=1;fillColor=#0ea5e9;strokeColor=none;" vertex="1" parent="1">
-          <mxGeometry x="1115" y="645" width="16" height="10" as="geometry" />
+
+        <mxCell id="l1-dot" value="" style="ellipse;fillColor=#0ea5e9;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="655" width="12" height="12" as="geometry" />
         </mxCell>
-        <mxCell id="legend1-text" value="Nginx / Proxy" style="text;html=1;fontSize=9;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
-          <mxGeometry x="1140" y="640" width="100" height="20" as="geometry" />
+        <mxCell id="l1-text" value="Nginx / Reverse Proxy" style="text;html=1;fontSize=10;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="650" width="150" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="legend2" value="" style="rounded=1;fillColor=#6366f1;strokeColor=none;" vertex="1" parent="1">
-          <mxGeometry x="1115" y="665" width="16" height="10" as="geometry" />
+
+        <mxCell id="l2-dot" value="" style="ellipse;fillColor=#6366f1;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="678" width="12" height="12" as="geometry" />
         </mxCell>
-        <mxCell id="legend2-text" value="FastAPI / Database" style="text;html=1;fontSize=9;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
-          <mxGeometry x="1140" y="660" width="120" height="20" as="geometry" />
+        <mxCell id="l2-text" value="FastAPI / Database" style="text;html=1;fontSize=10;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="673" width="150" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="legend3" value="" style="rounded=1;fillColor=#22c55e;strokeColor=none;" vertex="1" parent="1">
-          <mxGeometry x="1115" y="685" width="16" height="10" as="geometry" />
+
+        <mxCell id="l3-dot" value="" style="ellipse;fillColor=#22c55e;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="701" width="12" height="12" as="geometry" />
         </mxCell>
-        <mxCell id="legend3-text" value="Certificates / CA" style="text;html=1;fontSize=9;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
-          <mxGeometry x="1140" y="680" width="100" height="20" as="geometry" />
+        <mxCell id="l3-text" value="Certificates / CA" style="text;html=1;fontSize=10;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="696" width="150" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="legend4" value="" style="rounded=1;fillColor=#f59e0b;strokeColor=none;" vertex="1" parent="1">
-          <mxGeometry x="1115" y="705" width="16" height="10" as="geometry" />
+
+        <mxCell id="l4-dot" value="" style="ellipse;fillColor=#f59e0b;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="724" width="12" height="12" as="geometry" />
         </mxCell>
-        <mxCell id="legend4-text" value="Config Generation / Health" style="text;html=1;fontSize=9;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
-          <mxGeometry x="1140" y="700" width="150" height="20" as="geometry" />
+        <mxCell id="l4-text" value="Config Generation / Health Checks" style="text;html=1;fontSize=10;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="719" width="220" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="legend5" value="" style="rounded=1;fillColor=#ef4444;strokeColor=none;" vertex="1" parent="1">
-          <mxGeometry x="1115" y="725" width="16" height="10" as="geometry" />
+
+        <mxCell id="l5-dot" value="" style="ellipse;fillColor=#a78bfa;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="747" width="12" height="12" as="geometry" />
         </mxCell>
-        <mxCell id="legend5-text" value="Docker Socket (Reload)" style="text;html=1;fontSize=9;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
-          <mxGeometry x="1140" y="720" width="140" height="20" as="geometry" />
+        <mxCell id="l5-text" value="Access Logging / Web UI" style="text;html=1;fontSize=10;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="742" width="180" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="legend6" value="" style="rounded=1;fillColor=#a78bfa;strokeColor=none;" vertex="1" parent="1">
-          <mxGeometry x="1115" y="745" width="16" height="10" as="geometry" />
+
+        <mxCell id="l6-dot" value="" style="ellipse;fillColor=#ef4444;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="770" width="12" height="12" as="geometry" />
         </mxCell>
-        <mxCell id="legend6-text" value="Web UI (Static Files)" style="text;html=1;fontSize=9;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
-          <mxGeometry x="1140" y="740" width="140" height="20" as="geometry" />
+        <mxCell id="l6-text" value="Docker Socket (Reload)" style="text;html=1;fontSize=10;fillColor=none;strokeColor=none;fontColor=#8b90a0;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="765" width="180" height="20" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== PAGE 2: DATA FLOW ==================== -->
+  <diagram id="dataflow" name="Data Flow">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="df-title" value="Data Flow: Route Creation" style="text;html=1;fontSize=20;fontStyle=1;align=center;fillColor=none;strokeColor=none;fontColor=#e1e4eb;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="400" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Steps -->
+        <mxCell id="df1" value="1&#xa;Admin creates&#xa;route in Web UI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="140" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="df2" value="2&#xa;POST /api/routes&#xa;FastAPI saves to&#xa;SQLite DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="300" y="100" width="150" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="df3" value="3&#xa;Nginx Service renders&#xa;Jinja2 template to&#xa;route_N.conf" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#0ea5e9;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="530" y="100" width="160" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="df4" value="4&#xa;Config written to&#xa;shared volume&#xa;nginx-config" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="770" y="100" width="150" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="df5" value="5&#xa;docker exec&#xa;nginx -t&#xa;(validate config)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3a1a1a;strokeColor=#ef4444;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="100" width="140" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="df6" value="6&#xa;docker exec&#xa;nginx -s reload&#xa;(apply changes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3a1a1a;strokeColor=#ef4444;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="240" width="140" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="df7" value="7&#xa;Nginx picks up&#xa;new route from&#xa;conf.d/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#0ea5e9;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="770" y="240" width="150" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="df8" value="8&#xa;Traffic to&#xa;match_pattern is&#xa;proxied to target" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a3a1a;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="530" y="240" width="160" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows -->
+        <mxCell id="dfa1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#6366f1;strokeWidth=2;" edge="1" parent="1" source="df1" target="df2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dfa2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0ea5e9;strokeWidth=2;" edge="1" parent="1" source="df2" target="df3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dfa3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=2;" edge="1" parent="1" source="df3" target="df4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dfa4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#ef4444;strokeWidth=2;" edge="1" parent="1" source="df4" target="df5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dfa5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#ef4444;strokeWidth=2;" edge="1" parent="1" source="df5" target="df6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dfa6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0ea5e9;strokeWidth=2;" edge="1" parent="1" source="df6" target="df7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dfa7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#22c55e;strokeWidth=2;" edge="1" parent="1" source="df7" target="df8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- SSL Flow -->
+        <mxCell id="ssl-title" value="Data Flow: SSL Certificate Issuance" style="text;html=1;fontSize=20;fontStyle=1;align=center;fillColor=none;strokeColor=none;fontColor=#e1e4eb;" vertex="1" parent="1">
+          <mxGeometry x="320" y="380" width="450" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ssl1" value="1&#xa;Init CA&#xa;(RSA 4096, self-signed)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a3a1a;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="440" width="160" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="ssl2" value="2&#xa;Issue Certificate&#xa;(RSA 2048, CA-signed)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a3a1a;strokeColor=#22c55e;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="440" width="170" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="ssl3" value="3&#xa;Cert + Key written&#xa;to certs-data volume" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="570" y="440" width="160" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="ssl4" value="4&#xa;Assign cert to route&#xa;Enable SSL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="810" y="440" width="150" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="ssl5" value="5&#xa;Nginx config&#xa;includes ssl_certificate&#xa;paths, reload" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#0ea5e9;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="440" width="140" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ssla1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#22c55e;strokeWidth=2;" edge="1" parent="1" source="ssl1" target="ssl2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ssla2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=2;" edge="1" parent="1" source="ssl2" target="ssl3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ssla3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#6366f1;strokeWidth=2;" edge="1" parent="1" source="ssl3" target="ssl4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ssla4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#0ea5e9;strokeWidth=2;" edge="1" parent="1" source="ssl4" target="ssl5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Logging Flow -->
+        <mxCell id="log-title" value="Data Flow: Access Logging" style="text;html=1;fontSize=20;fontStyle=1;align=center;fillColor=none;strokeColor=none;fontColor=#e1e4eb;" vertex="1" parent="1">
+          <mxGeometry x="370" y="560" width="350" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="log1" value="Request hits&#xa;Nginx proxy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#0ea5e9;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="610" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="log2" value="JSON log line&#xa;written to&#xa;proxy-access.log" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b2d5e;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="280" y="610" width="145" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="log3" value="Shared log-data&#xa;volume" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2d2d44;strokeColor=#f59e0b;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="495" y="610" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="log4" value="Manager reads&#xa;new log lines&#xa;(tail approach)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="695" y="610" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="log5" value="/api/logs/proxy&#xa;with filters&#xa;Time|IP|Method|Path" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b2d5e;strokeColor=#a78bfa;fontColor=#e1e4eb;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="905" y="610" width="155" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="loga1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#a78bfa;strokeWidth=2;" edge="1" parent="1" source="log1" target="log2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="loga2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#f59e0b;strokeWidth=2;" edge="1" parent="1" source="log2" target="log3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="loga3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#6366f1;strokeWidth=2;" edge="1" parent="1" source="log3" target="log4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="loga4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#a78bfa;strokeWidth=2;" edge="1" parent="1" source="log4" target="log5">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
       </root>
