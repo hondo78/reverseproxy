@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, Integer, String, Text, func
+from sqlalchemy import Boolean, DateTime, Integer, String, Text, func, text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -21,6 +21,7 @@ class Route(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     route_type: Mapped[str] = mapped_column(String(10), nullable=False)  # "path" or "host"
     match_pattern: Mapped[str] = mapped_column(String(512), nullable=False)
+    match_host: Mapped[str | None] = mapped_column(String(512), nullable=True, default=None)
     target_host: Mapped[str] = mapped_column(String(512), nullable=False)
     target_port: Mapped[int] = mapped_column(Integer, nullable=False)
     ssl_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -56,6 +57,11 @@ class CertificateAuthority(Base):
 async def init_db():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # Migrate: add match_host column if missing (for existing databases)
+        try:
+            await conn.execute(text("ALTER TABLE routes ADD COLUMN match_host VARCHAR(512)"))
+        except Exception:
+            pass
 
 
 async def get_db():

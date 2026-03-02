@@ -1,5 +1,7 @@
 import os
+import re
 import subprocess
+from collections import defaultdict
 
 from jinja2 import Environment, FileSystemLoader
 from sqlalchemy import select
@@ -18,34 +20,92 @@ def _get_template():
     return _template_env.get_template("nginx_route.conf.j2")
 
 
+def _get_effective_hostname(route: Route) -> str:
+    """Return the effective hostname for grouping routes into server blocks."""
+    if route.route_type == "host":
+        return route.match_pattern.split(":")[0].split("/")[0]
+    return route.match_host if route.match_host else "_"
+
+
+def _sanitize_hostname(hostname: str) -> str:
+    """Sanitize hostname for use in a config filename."""
+    return re.sub(r"[^a-zA-Z0-9._-]", "_", hostname)
+
+
 async def generate_all_configs(db: AsyncSession) -> None:
     """Regenerate all nginx route config files from the database."""
     result = await db.execute(select(Route).where(Route.enabled.is_(True)))
     routes = result.scalars().all()
 
-    # Clear existing generated configs
+    # Clear existing generated configs (both old route_* and new host_* patterns)
     os.makedirs(NGINX_CONF_DIR, exist_ok=True)
     for f in os.listdir(NGINX_CONF_DIR):
-        if f.startswith("route_") and f.endswith(".conf"):
+        if (f.startswith("route_") or f.startswith("host_")) and f.endswith(".conf"):
             os.remove(os.path.join(NGINX_CONF_DIR, f))
+
+    # Group routes by effective hostname
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for route in routes:
+        hostname = _get_effective_hostname(route)
+        location = "/" if route.route_type == "host" else route.match_pattern
+        groups[hostname].append({"route": route, "location": location})
+
+    # Load certificates for all routes that need SSL
+    cert_cache: dict[int, Certificate] = {}
+    for entries in groups.values():
+        for entry in entries:
+            route = entry["route"]
+            if route.ssl_enabled and route.certificate_id and route.certificate_id not in cert_cache:
+                cert_result = await db.execute(
+                    select(Certificate).where(Certificate.id == route.certificate_id)
+                )
+                cert = cert_result.scalar_one_or_none()
+                if cert:
+                    cert_cache[route.certificate_id] = cert
 
     template = _get_template()
 
-    for route in routes:
-        cert = None
-        if route.ssl_enabled and route.certificate_id:
-            cert_result = await db.execute(
-                select(Certificate).where(Certificate.id == route.certificate_id)
-            )
-            cert = cert_result.scalar_one_or_none()
+    # Always generate the default catch-all server (with any "_" path routes)
+    default_entries = groups.pop("_", [])
+    has_root_location = any(e["location"] == "/" for e in default_entries)
+    config_content = template.render(
+        hostname="_",
+        entries=default_entries,
+        ssl_cert=None,
+        is_default=True,
+        has_root_location=has_root_location,
+        certs_dir=NGINX_CERTS_DIR,
+    )
+    config_path = os.path.join(NGINX_CONF_DIR, "host__.conf")
+    with open(config_path, "w") as f:
+        f.write(config_content)
+
+    # Remove bootstrap fallback if it exists (replaced by host__.conf)
+    fallback_path = os.path.join(NGINX_CONF_DIR, "host_default.conf")
+    if os.path.exists(fallback_path):
+        os.remove(fallback_path)
+
+    for hostname, entries in groups.items():
+        # Find the first SSL certificate in the group
+        ssl_cert = None
+        for entry in entries:
+            route = entry["route"]
+            if route.ssl_enabled and route.certificate_id:
+                ssl_cert = cert_cache.get(route.certificate_id)
+                if ssl_cert:
+                    break
 
         config_content = template.render(
-            route=route,
-            cert=cert,
+            hostname=hostname,
+            entries=entries,
+            ssl_cert=ssl_cert,
+            is_default=False,
+            has_root_location=False,
             certs_dir=NGINX_CERTS_DIR,
         )
 
-        config_path = os.path.join(NGINX_CONF_DIR, f"route_{route.id}.conf")
+        safe_name = _sanitize_hostname(hostname)
+        config_path = os.path.join(NGINX_CONF_DIR, f"host_{safe_name}.conf")
         with open(config_path, "w") as f:
             f.write(config_content)
 

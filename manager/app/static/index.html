@@ -137,8 +137,14 @@
                         <option value="path">Path-based</option>
                     </select>
                 </div>
+                <div class="form-group" id="match-host-group" style="display:none">
+                    <label for="route-match-host">Linked Host Route</label>
+                    <select id="route-match-host">
+                        <option value="">-- No host (any) --</option>
+                    </select>
+                </div>
                 <div class="form-group">
-                    <label for="route-match">Match Pattern</label>
+                    <label for="route-match" id="route-match-label">Match Pattern</label>
                     <input type="text" id="route-match" required placeholder="app.example.com or /api/">
                 </div>
                 <div class="form-group">

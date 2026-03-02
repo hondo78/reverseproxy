@@ -74,6 +74,31 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 
 // --- Routes ---
 
+function renderRouteCard(r, isChild) {
+    const cls = isChild ? 'card route-child' : 'card';
+    const display = r.route_type === 'host'
+        ? `${r.match_pattern} &rarr; ${r.target_host}:${r.target_port}`
+        : `${r.match_pattern} &rarr; ${r.target_host}:${r.target_port}`;
+    return `
+        <div class="${cls}">
+            <div class="card-info">
+                <h4>
+                    ${r.name}
+                    ${badgeHtml(r.route_type, r.route_type)}
+                    ${r.ssl_enabled ? badgeHtml('SSL', 'ssl') : ''}
+                    ${badgeHtml(r.enabled ? 'enabled' : 'disabled', r.enabled ? 'enabled' : 'disabled')}
+                    ${badgeHtml(r.health_status, r.health_status)}
+                </h4>
+                <p>${display}</p>
+            </div>
+            <div class="card-actions">
+                <button class="btn btn-sm btn-secondary" onclick="toggleRoute(${r.id})">${r.enabled ? 'Disable' : 'Enable'}</button>
+                <button class="btn btn-sm btn-secondary" onclick="editRoute(${r.id})">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteRoute(${r.id})">Delete</button>
+            </div>
+        </div>`;
+}
+
 async function loadRoutes() {
     try {
         const routes = await api('/api/routes');
@@ -82,25 +107,48 @@ async function loadRoutes() {
             list.innerHTML = '<div class="empty-state">No routes configured yet.</div>';
             return;
         }
-        list.innerHTML = routes.map(r => `
-            <div class="card">
-                <div class="card-info">
-                    <h4>
-                        ${r.name}
-                        ${badgeHtml(r.route_type, r.route_type)}
-                        ${r.ssl_enabled ? badgeHtml('SSL', 'ssl') : ''}
-                        ${badgeHtml(r.enabled ? 'enabled' : 'disabled', r.enabled ? 'enabled' : 'disabled')}
-                        ${badgeHtml(r.health_status, r.health_status)}
-                    </h4>
-                    <p>${r.match_pattern} &rarr; ${r.target_host}:${r.target_port}</p>
-                </div>
-                <div class="card-actions">
-                    <button class="btn btn-sm btn-secondary" onclick="toggleRoute(${r.id})">${r.enabled ? 'Disable' : 'Enable'}</button>
-                    <button class="btn btn-sm btn-secondary" onclick="editRoute(${r.id})">Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteRoute(${r.id})">Delete</button>
-                </div>
-            </div>
-        `).join('');
+
+        // Group: host routes as parents, path routes with matching match_host as children
+        const hostRoutes = routes.filter(r => r.route_type === 'host');
+        const pathRoutes = routes.filter(r => r.route_type === 'path');
+
+        // Build hostname -> host route mapping
+        const hostMap = new Map();
+        for (const r of hostRoutes) {
+            const hostname = r.match_pattern.split(':')[0].split('/')[0];
+            hostMap.set(hostname, r);
+        }
+
+        // Assign path routes to their host groups
+        const grouped = new Map(); // hostname -> { host: route, children: [] }
+        for (const r of hostRoutes) {
+            const hostname = r.match_pattern.split(':')[0].split('/')[0];
+            grouped.set(hostname, { host: r, children: [] });
+        }
+
+        const ungrouped = [];
+        for (const r of pathRoutes) {
+            if (r.match_host && grouped.has(r.match_host)) {
+                grouped.get(r.match_host).children.push(r);
+            } else {
+                ungrouped.push(r);
+            }
+        }
+
+        let html = '';
+        for (const [hostname, group] of grouped) {
+            html += `<div class="route-group">`;
+            html += renderRouteCard(group.host, false);
+            for (const child of group.children) {
+                html += renderRouteCard(child, true);
+            }
+            html += `</div>`;
+        }
+        for (const r of ungrouped) {
+            html += renderRouteCard(r, false);
+        }
+
+        list.innerHTML = html;
     } catch (e) {
         toast(e.message, 'error');
     }
@@ -135,6 +183,8 @@ async function editRoute(id) {
         document.getElementById('route-name').value = r.name;
         document.getElementById('route-type').value = r.route_type;
         document.getElementById('route-match').value = r.match_pattern;
+        await toggleMatchHost();
+        document.getElementById('route-match-host').value = r.match_host || '';
         document.getElementById('route-target-host').value = r.target_host;
         document.getElementById('route-target-port').value = r.target_port;
         document.getElementById('route-ssl').checked = r.ssl_enabled;
@@ -149,15 +199,51 @@ async function editRoute(id) {
     }
 }
 
-document.getElementById('btn-add-route').addEventListener('click', () => {
+document.getElementById('btn-add-route').addEventListener('click', async () => {
     document.getElementById('route-modal-title').textContent = 'Add Route';
     document.getElementById('route-form').reset();
     document.getElementById('route-id').value = '';
     toggleCertSelect();
+    await toggleMatchHost();
     openModal('route-modal');
 });
 
 document.getElementById('route-ssl').addEventListener('change', toggleCertSelect);
+document.getElementById('route-type').addEventListener('change', () => toggleMatchHost());
+
+async function toggleMatchHost() {
+    const type = document.getElementById('route-type').value;
+    const hostGroup = document.getElementById('match-host-group');
+    const matchLabel = document.getElementById('route-match-label');
+    const matchInput = document.getElementById('route-match');
+
+    if (type === 'path') {
+        hostGroup.style.display = 'block';
+        matchLabel.textContent = 'Path';
+        matchInput.placeholder = '/api/';
+        await loadHostRouteOptions();
+    } else {
+        hostGroup.style.display = 'none';
+        matchLabel.textContent = 'Hostname';
+        matchInput.placeholder = 'app.example.com';
+        document.getElementById('route-match-host').value = '';
+    }
+}
+
+async function loadHostRouteOptions() {
+    try {
+        const routes = await api('/api/routes');
+        const select = document.getElementById('route-match-host');
+        const current = select.value;
+        const hostRoutes = routes.filter(r => r.route_type === 'host');
+        select.innerHTML = '<option value="">-- No host (any) --</option>' +
+            hostRoutes.map(r => {
+                const hostname = r.match_pattern.split(':')[0].split('/')[0];
+                return `<option value="${hostname}">${r.name} (${hostname})</option>`;
+            }).join('');
+        if (current) select.value = current;
+    } catch (e) { /* ignore */ }
+}
 
 function toggleCertSelect() {
     const show = document.getElementById('route-ssl').checked;
@@ -183,6 +269,7 @@ document.getElementById('route-form').addEventListener('submit', async e => {
         name: document.getElementById('route-name').value,
         route_type: document.getElementById('route-type').value,
         match_pattern: document.getElementById('route-match').value,
+        match_host: document.getElementById('route-match-host').value || null,
         target_host: document.getElementById('route-target-host').value,
         target_port: parseInt(document.getElementById('route-target-port').value),
         ssl_enabled: document.getElementById('route-ssl').checked,

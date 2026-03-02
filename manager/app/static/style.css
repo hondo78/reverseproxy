@@ -199,6 +199,35 @@ main {
 .badge-path { background: rgba(245,158,11,0.15); color: var(--warning); }
 .badge-ssl { background: rgba(34,197,94,0.15); color: var(--success); }
 
+/* Route Groups */
+.route-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.route-group .card:first-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.route-group .card + .card {
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.route-group .card + .card:not(:last-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.route-child {
+    margin-left: 1.5rem;
+    border-left: 2px solid var(--primary) !important;
+    background: var(--bg-input);
+}
+
 /* CA Section */
 .ca-section {
     background: var(--bg-card);

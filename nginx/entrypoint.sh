@@ -13,4 +13,24 @@ if [ ! -f /etc/nginx/certs/default.crt ] || [ ! -f /etc/nginx/certs/default.key 
     echo "Generated default SSL certificate"
 fi
 
+# Generate default catch-all server config if no configs exist yet
+if [ ! -f /etc/nginx/conf.d/host__.conf ]; then
+    cat > /etc/nginx/conf.d/host_default.conf <<'CONF'
+# Default catch-all server (bootstrap fallback, replaced by manager)
+server {
+    listen 80 default_server;
+    listen 443 ssl default_server;
+    server_name _;
+
+    set $route_target "-";
+
+    ssl_certificate /etc/nginx/certs/default.crt;
+    ssl_certificate_key /etc/nginx/certs/default.key;
+
+    return 444;
+}
+CONF
+    echo "Generated default catch-all server config"
+fi
+
 exec nginx -g "daemon off;"

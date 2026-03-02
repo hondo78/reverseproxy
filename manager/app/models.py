@@ -9,6 +9,7 @@ class RouteCreate(BaseModel):
     name: str
     route_type: str  # "path" or "host"
     match_pattern: str
+    match_host: str | None = None
     target_host: str
     target_port: int
     ssl_enabled: bool = False
@@ -20,6 +21,7 @@ class RouteUpdate(BaseModel):
     name: str | None = None
     route_type: str | None = None
     match_pattern: str | None = None
+    match_host: str | None = None
     target_host: str | None = None
     target_port: int | None = None
     ssl_enabled: bool | None = None
@@ -32,6 +34,7 @@ class RouteResponse(BaseModel):
     name: str
     route_type: str
     match_pattern: str
+    match_host: str | None
     target_host: str
     target_port: int
     ssl_enabled: bool
