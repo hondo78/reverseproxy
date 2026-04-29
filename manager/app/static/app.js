@@ -43,7 +43,8 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.add('active');
         document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
 
-        if (btn.dataset.tab === 'routes') loadRoutes();
+        if (btn.dataset.tab === 'dashboard') loadDashboard();
+        else if (btn.dataset.tab === 'routes') loadRoutes();
         else if (btn.dataset.tab === 'certificates') { loadCA(); loadCerts(); }
         else if (btn.dataset.tab === 'health') loadHealth();
         else if (btn.dataset.tab === 'logs') { loadLogs(); startLogAutoRefresh(); }
@@ -71,6 +72,77 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
         if (e.target === overlay) overlay.classList.remove('active');
     });
 });
+
+// --- Dashboard ---
+
+const TILE_COLORS = [
+    '#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316',
+    '#eab308', '#22c55e', '#14b8a6', '#06b6d4', '#3b82f6',
+];
+
+function tileColor(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return TILE_COLORS[Math.abs(hash) % TILE_COLORS.length];
+}
+
+function buildRouteUrl(route) {
+    const proto = route.ssl_enabled ? 'https' : 'http';
+    if (route.route_type === 'host') {
+        return `${proto}://${route.match_pattern}`;
+    }
+    return null;
+}
+
+function faviconUrl(url) {
+    try {
+        const u = new URL(url);
+        return `${u.origin}/favicon.ico`;
+    } catch { return null; }
+}
+
+async function loadDashboard() {
+    try {
+        const routes = await api('/api/routes');
+        const grid = document.getElementById('dashboard-grid');
+
+        // Only show host-based routes as tiles (they represent actual sites)
+        const hostRoutes = routes.filter(r => r.route_type === 'host');
+
+        if (hostRoutes.length === 0) {
+            grid.innerHTML = '<div class="empty-state">No services configured yet. Add a route to get started.</div>';
+            return;
+        }
+
+        grid.innerHTML = hostRoutes.map(r => {
+            const url = buildRouteUrl(r);
+            const initials = r.name.substring(0, 2).toUpperCase();
+            const color = tileColor(r.name);
+            const status = r.enabled ? r.health_status : 'disabled';
+            const disabledCls = r.enabled ? '' : ' tile-disabled';
+            const favicon = url ? faviconUrl(url) : null;
+
+            return `
+                <a class="dashboard-tile${disabledCls}" href="${url || '#'}" ${url ? 'target="_blank" rel="noopener"' : ''}>
+                    <span class="dashboard-tile-status ${status}"></span>
+                    <div class="dashboard-tile-icon" style="background:${color}" ${favicon ? `data-favicon="${favicon}"` : ''}>
+                        ${initials}
+                    </div>
+                    <span class="dashboard-tile-name">${r.name}</span>
+                    <span class="dashboard-tile-url">${r.match_pattern}</span>
+                </a>`;
+        }).join('');
+
+        // Try loading favicons
+        grid.querySelectorAll('.dashboard-tile-icon[data-favicon]').forEach(el => {
+            const img = new Image();
+            img.onload = () => { el.innerHTML = ''; el.appendChild(img); };
+            img.src = el.dataset.favicon;
+        });
+    } catch (e) {
+        toast(e.message, 'error');
+    }
+}
 
 // --- Routes ---
 
@@ -344,7 +416,8 @@ async function loadCerts() {
                     <p>Valid until: ${formatDate(c.valid_until)} | Domains: ${c.domain_names}</p>
                 </div>
                 <div class="card-actions">
-                    <a class="btn btn-sm btn-secondary" href="/api/certificates/${c.id}/download" download>Download</a>
+                    <a class="btn btn-sm btn-secondary" href="/api/certificates/${c.id}/download" download>Certificate</a>
+                    <a class="btn btn-sm btn-secondary" href="/api/certificates/${c.id}/download-key" download>Key</a>
                     <button class="btn btn-sm btn-danger" onclick="deleteCert(${c.id})">Delete</button>
                 </div>
             </div>
@@ -590,4 +663,4 @@ document.querySelectorAll('#filter-ip, #filter-path').forEach(input => {
 });
 
 // --- Init ---
-loadRoutes();
+loadDashboard();

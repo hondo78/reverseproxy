@@ -10,7 +10,8 @@
     <header>
         <h1>Reverse Proxy Manager</h1>
         <nav>
-            <button class="nav-btn active" data-tab="routes">Routes</button>
+            <button class="nav-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="nav-btn" data-tab="routes">Routes</button>
             <button class="nav-btn" data-tab="certificates">Certificates</button>
             <button class="nav-btn" data-tab="health">Health</button>
             <button class="nav-btn" data-tab="logs">Logs</button>
@@ -18,8 +19,16 @@
     </header>
 
     <main>
+        <!-- Dashboard Tab -->
+        <section id="tab-dashboard" class="tab-content active">
+            <div class="tab-header">
+                <h2>My Services</h2>
+            </div>
+            <div id="dashboard-grid" class="dashboard-grid"></div>
+        </section>
+
         <!-- Routes Tab -->
-        <section id="tab-routes" class="tab-content active">
+        <section id="tab-routes" class="tab-content">
             <div class="tab-header">
                 <h2>Proxy Routes</h2>
                 <button class="btn btn-primary" id="btn-add-route">+ Add Route</button>

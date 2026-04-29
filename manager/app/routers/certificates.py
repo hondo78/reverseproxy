@@ -94,3 +94,17 @@ async def download_certificate(cert_id: int, db: AsyncSession = Depends(get_db))
         media_type="application/x-pem-file",
         headers={"Content-Disposition": f"attachment; filename={safe_name}.crt"},
     )
+
+
+@router.get("/certificates/{cert_id}/download-key")
+async def download_certificate_key(cert_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Certificate).where(Certificate.id == cert_id))
+    cert = result.scalar_one_or_none()
+    if not cert:
+        raise HTTPException(404, "Certificate not found")
+    safe_name = cert.common_name.replace("*", "_wildcard_").replace("/", "_")
+    return Response(
+        content=cert.key_pem,
+        media_type="application/x-pem-file",
+        headers={"Content-Disposition": f"attachment; filename={safe_name}.key"},
+    )
